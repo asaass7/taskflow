@@ -1,0 +1,135 @@
+/* ===== Общее ===== */
+body {
+    background: #f5f7fb;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    letter-spacing: .5px;
+}
+
+/* ===== Карточки задач ===== */
+.task-card {
+    transition: transform .15s ease, box-shadow .15s ease;
+    border: none;
+}
+
+.task-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .08);
+}
+
+.task-card .card-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+.task-card .card-text {
+    line-height: 1.45;
+}
+
+/* ===== Бейджи статусов ===== */
+.status-badge {
+    font-size: .72rem;
+    font-weight: 600;
+    padding: .35em .65em;
+    border-radius: .5rem;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+}
+
+.status-new        { background: #e7f1ff; color: #0d6efd; }
+.status-in_progress{ background: #fff3cd; color: #997404; }
+.status-review     { background: #e2d9f3; color: #59359a; }
+.status-done       { background: #d1e7dd; color: #0f5132; }
+.status-cancelled  { background: #f8d7da; color: #842029; }
+
+/* ===== Бейдж приоритета ===== */
+.priority-badge {
+    font-size: .72rem;
+    font-weight: 600;
+    padding: .35em .6em;
+    border-radius: .5rem;
+}
+
+.priority-low    { background: #e2e3e5; color: #41464b; }
+.priority-medium { background: #cfe2ff; color: #084298; }
+.priority-high   { background: #f8d7da; color: #842029; }
+
+/* ===== Пустое состояние ===== */
+.empty-state {
+    color: #adb5bd;
+}
+
+.empty-state i {
+    font-size: 4rem;
+}
+
+/* ===== Формы ===== */
+.form-label {
+    font-weight: 500;
+}
+
+/* ===== Уведомления ===== */
+.alert {
+    border: none;
+    border-radius: .5rem;
+}
+/* ===== Карточка формы «Новая задача» ===== */
+.form-card {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.form-card-header {
+    padding: 1.5rem 1.75rem 1rem;
+    border-bottom: 1px solid #f1f3f5;
+    background: linear-gradient(180deg, #f8f9ff 0%, #ffffff 100%);
+}
+
+.form-card-body {
+    padding: 1.5rem 1.75rem 1.75rem;
+}
+
+.form-card .form-label {
+    font-weight: 600;
+    font-size: .9rem;
+    color: #495057;
+    margin-bottom: .35rem;
+}
+
+.form-card .form-control,
+.form-card .form-select {
+    border-radius: .65rem;
+    border-color: #dee2e6;
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.form-card .form-control:focus,
+.form-card .form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 .2rem rgba(13, 110, 253, .15);
+}
+
+.form-card .form-control-lg {
+    font-size: 1rem;
+    padding: .75rem 1rem;
+}
+
+.form-card .btn-lg {
+    padding: .6rem 1.25rem;
+    font-size: .95rem;
+    border-radius: .65rem;
+}
+
+/* Адаптация: на узких экранах уменьшаем отступы */
+@media (max-width: 576px) {
+    .form-card-header,
+    .form-card-body {
+        padding: 1.15rem 1.25rem;
+    }
+}
