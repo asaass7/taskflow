@@ -1,13 +1,12 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from flask_migrate import Migrate
 from datetime import datetime
 
+from config import Config
 from models import db, User, Project, Task, TaskTag, Comment, PasswordResetToken
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://localhost/taskflow_db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'dev-secret-key-change-me'
+app.config.from_object(Config)
 
 db.init_app(app)
 migrate = Migrate(app, db)
@@ -44,14 +43,13 @@ def add_task():
             return redirect(url_for('index'))
         if title:
             priority = request.form.get('priority', 'medium')
-            due_date_raw = request.form.get('due_date')  # строка 'YYYY-MM-DD' или ''
+            due_date_raw = request.form.get('due_date')
             due_date = None
             if due_date_raw:
                 try:
                     due_date = datetime.fromisoformat(due_date_raw)
                 except ValueError:
                     due_date = None
-
             task = Task(
                 title=title,
                 description=description,
@@ -91,5 +89,10 @@ def delete_task(task_id):
     return redirect(url_for('index'))
 
 
+@app.route('/health/')
+def health():
+    return jsonify(status='ok', service='web')
+
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=app.config['DEBUG'])
