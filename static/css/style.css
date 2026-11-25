@@ -1,7 +1,27 @@
+/* ===== CSS-переменные (единая система стилей) ===== */
+:root {
+    --primary-color: #0d6efd;
+    --primary-dark: #0a58ca;
+    --text-color: #212529;
+    --text-muted: #6c757d;
+    --bg-color: #f5f7fb;
+    --card-bg: #ffffff;
+    --border-color: #e9ecef;
+    --danger: #dc3545;
+    --success: #198754;
+    --spacing-unit: 8px;
+    --radius-md: 0.65rem;
+    --radius-lg: 1rem;
+    --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
 /* ===== Общее ===== */
 body {
-    background: #f5f7fb;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: var(--font-main);
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    line-height: 1.5;
+    margin: 0;
 }
 
 .navbar-brand {
@@ -13,6 +33,8 @@ body {
 .task-card {
     transition: transform .15s ease, box-shadow .15s ease;
     border: none;
+    background-color: var(--card-bg);
+    border-radius: var(--radius-lg);
 }
 
 .task-card:hover {
@@ -40,11 +62,11 @@ body {
     letter-spacing: .3px;
 }
 
-.status-new        { background: #e7f1ff; color: #0d6efd; }
-.status-in_progress{ background: #fff3cd; color: #997404; }
-.status-review     { background: #e2d9f3; color: #59359a; }
-.status-done       { background: #d1e7dd; color: #0f5132; }
-.status-cancelled  { background: #f8d7da; color: #842029; }
+.status-new         { background: #e7f1ff; color: #0d6efd; }
+.status-in_progress { background: #fff3cd; color: #997404; }
+.status-review      { background: #e2d9f3; color: #59359a; }
+.status-done        { background: #d1e7dd; color: #0f5132; }
+.status-cancelled   { background: #f8d7da; color: #842029; }
 
 /* ===== Бейдж приоритета ===== */
 .priority-badge {
@@ -77,6 +99,7 @@ body {
     border: none;
     border-radius: .5rem;
 }
+
 /* ===== Карточка формы «Новая задача» ===== */
 .form-card {
     background: #ffffff;
@@ -126,10 +149,33 @@ body {
     border-radius: .65rem;
 }
 
-/* Адаптация: на узких экранах уменьшаем отступы */
-@media (max-width: 576px) {
+/* ===== Адаптивность (Mobile First) ===== */
+@media (max-width: 768px) {
+    .navbar .d-flex {
+        flex-wrap: wrap;
+        gap: 0.5rem !important;
+        margin-top: 0.5rem;
+    }
+    .navbar-brand {
+        font-size: 1.1rem;
+    }
+    h1 {
+        font-size: 1.5rem;
+    }
     .form-card-header,
     .form-card-body {
         padding: 1.15rem 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .task-card .card-title {
+        font-size: 1rem;
+    }
+    .btn {
+        font-size: 0.85rem;
+    }
+    .empty-state i {
+        font-size: 3rem;
     }
 }

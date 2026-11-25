@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Админ-панель — TaskFlow{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h1 class="h4">Панель администратора</h1>
+        <p>Всего пользователей: {{ user_count }}</p>
+        <p>Всего задач: {{ task_count }}</p>
+    </div>
+</div>
+{% endblock %}

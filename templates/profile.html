@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Профиль — TaskFlow{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h1 class="h4 mb-4">Профиль</h1>
+                <p><strong>ФИО:</strong> {{ user.full_name }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>Роль:</strong>
+                    <span class="badge bg-{{ 'danger' if user.role == 'admin' else 'primary' }}">
+                        {{ user.role }}
+                    </span>
+                </p>
+                <p><strong>Дата регистрации:</strong> {{ user.created_at.strftime('%d.%m.%Y %H:%M') }}</p>
+                <a class="btn btn-outline-secondary" href="{{ url_for('index') }}">К задачам</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

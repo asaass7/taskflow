@@ -1,12 +1,12 @@
 from datetime import datetime, timezone
 
-from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
 
-db = SQLAlchemy()
+from extensions import db, login_manager
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.BigInteger, primary_key=True)
@@ -66,7 +66,7 @@ class Task(db.Model):
     id = db.Column(db.BigInteger, primary_key=True)
     project_id = db.Column(db.BigInteger,
                            db.ForeignKey('projects.id', ondelete='CASCADE'),
-                           nullable=False, index=True)
+                           nullable=True, index=True)
     author_id = db.Column(db.BigInteger,
                           db.ForeignKey('users.id', ondelete='CASCADE'),
                           nullable=False)
@@ -152,3 +152,20 @@ class PasswordResetToken(db.Model):
 
     def is_valid(self) -> bool:
         return self.used_at is None and self.expires_at > datetime.now(timezone.utc)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+class AiMessage(db.Model):
+    __tablename__ = 'ai_messages'
+
+    id = db.Column(db.BigInteger, primary_key=True)
+    user_id = db.Column(db.BigInteger,
+                        db.ForeignKey('users.id', ondelete='CASCADE'),
+                        nullable=False, index=True)
+    role = db.Column(db.String(10), nullable=False)  # 'user' / 'assistant'
+    content = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime(timezone=True), nullable=False,
+                           default=lambda: datetime.now(timezone.utc))

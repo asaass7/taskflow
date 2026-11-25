@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}Добро пожаловать в TaskFlow{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: 60vh;">
+    <div class="col-lg-8 text-center">
+        <div class="mb-4">
+            <i class="bi bi-check2-square text-primary" style="font-size: 5rem;"></i>
+        </div>
+        <h1 class="display-5 fw-bold mb-3">Управляйте задачами легко</h1>
+        <p class="lead text-muted mb-4">
+            TaskFlow — это простой трекер задач для команд и индивидуальной работы.
+            Создавайте проекты, ставьте дедлайны и отслеживайте прогресс в одном месте.
+        </p>
+        <div class="d-flex justify-content-center gap-3">
+            <a class="btn btn-primary btn-lg px-4" href="{{ url_for('register') }}">
+                <i class="bi bi-person-plus"></i> Начать бесплатно
+            </a>
+            <a class="btn btn-outline-primary btn-lg px-4" href="{{ url_for('login') }}">
+                <i class="bi bi-box-arrow-in-right"></i> Войти
+            </a>
+        </div>
+    </div>
+</div>
+
+<hr class="my-5">
+
+<div class="row g-4 text-center">
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body">
+                <i class="bi bi-list-task text-primary" style="font-size: 2rem;"></i>
+                <h5 class="mt-3">Задачи</h5>
+                <p class="text-muted small">Создавайте задачи, ставьте приоритеты и дедлайны.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body">
+                <i class="bi bi-kanban text-primary" style="font-size: 2rem;"></i>
+                <h5 class="mt-3">Статусы</h5>
+                <p class="text-muted small">Отслеживайте прогресс: от «Новой» до «Выполненной».</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body">
+                <i class="bi bi-people text-primary" style="font-size: 2rem;"></i>
+                <h5 class="mt-3">Команда</h5>
+                <p class="text-muted small">Назначайте исполнителей и работайте вместе.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

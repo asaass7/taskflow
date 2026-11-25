@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}ИИ-помощник — TaskFlow{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <h5 class="mb-0"><i class="bi bi-robot"></i> TaskBot — ИИ-помощник</h5>
+            </div>
+            <div class="card-body" style="height: 500px; overflow-y: auto;" id="chat-log">
+                <div class="text-muted text-center">Задайте вопрос о TaskFlow...</div>
+            </div>
+            <div class="card-footer bg-white">
+                <form id="chat-form" class="d-flex gap-2">
+                    <input type="text" id="chat-input" class="form-control"
+                           maxlength="2000" placeholder="Ваш вопрос..." autocomplete="off">
+                    <button type="submit" class="btn btn-primary">Отправить</button>
+                </form>
+                <div id="chat-error" class="text-danger small mt-2" hidden></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    var log = document.getElementById('chat-log');
+    var form = document.getElementById('chat-form');
+    var input = document.getElementById('chat-input');
+    var errorDiv = document.getElementById('chat-error');
+
+    function addMsg(text, cls) {
+        var div = document.createElement('div');
+        div.className = 'mb-2 ' + cls;
+        div.textContent = text;  // textContent — защита от XSS
+        log.appendChild(div);
+        log.scrollTop = log.scrollHeight;
+    }
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var text = input.value.trim();
+        if (!text) return;
+
+        addMsg('Вы: ' + text, 'text-end text-primary');
+        input.value = '';
+        input.disabled = true;
+        var wait = document.createElement('div');
+        wait.className = 'mb-2 text-muted';
+        wait.textContent = 'TaskBot печатает...';
+        log.appendChild(wait);
+        log.scrollTop = log.scrollHeight;
+
+        fetch('/agent/send', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token() }}'
+            },
+            credentials: 'same-origin',
+            body: JSON.stringify({message: text})
+        })
+        .then(function(r) { return r.json().then(function(d) { return {ok: r.ok, d: d}; }); })
+        .then(function(res) {
+            wait.remove();
+            if (res.ok) {
+                addMsg('TaskBot: ' + res.d.reply, 'text-start');
+            } else {
+                errorDiv.textContent = res.d.error || 'Ошибка.';
+                errorDiv.hidden = false;
+            }
+        })
+        .catch(function() {
+            wait.remove();
+            errorDiv.textContent = 'Сеть недоступна.';
+            errorDiv.hidden = false;
+        })
+        .finally(function() { input.disabled = false; input.focus(); });
+    });
+})();
+</script>
+{% endblock %}
