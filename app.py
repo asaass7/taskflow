@@ -25,6 +25,22 @@ from models import User, Project, Task, TaskTag, Comment, PasswordResetToken
 from api import api_bp
 app.register_blueprint(api_bp)
 
+@app.after_request
+def set_security_headers(response):
+    # Защита от XSS (Content-Security-Policy)
+    response.headers['Content-Security-Policy'] = (
+        "default-src 'self'; "
+        "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; "
+        "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; "
+        "font-src 'self' https://cdn.jsdelivr.net; "
+        "img-src 'self' data:"
+    )
+    # Защита от MIME-sniffing
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    # Защита от clickjacking
+    response.headers['X-Frame-Options'] = 'DENY'
+    return response
+
 
 @app.errorhandler(CSRFError)
 def handle_csrf_error(e):
@@ -45,6 +61,20 @@ STATUSES = [
     ('cancelled', 'Отменена'),
 ]
 
+import time
+
+# Простой in-memory rate limit для ИИ-агента
+_rate = {}  # user_id -> [timestamp, ...]
+
+def rate_limit(user_id, limit=10, per=300):
+    """10 запросов за 5 минут."""
+    now = time.time()
+    window = [t for t in _rate.get(user_id, []) if now - t < per]
+    if len(window) >= limit:
+        return False
+    window.append(now)
+    _rate[user_id] = window
+    return True
 
 # ====================== ГЛАВНАЯ ======================
 
@@ -238,6 +268,13 @@ def agent_page():
 
 @app.route('/agent/send', methods=['POST'])
 @login_required
+def agent_send():
+    # Rate limit: 10 запросов за 5 минут
+    if not rate_limit(current_user.id):
+        return jsonify({'error': 'Слишком много запросов. Подождите 5 минут.'}), 429
+
+    data = request.get_json(silent=True) or {}
+
 def agent_send():
     data = request.get_json(silent=True) or {}
     text = (data.get('message') or '').strip()

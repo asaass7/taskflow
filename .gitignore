@@ -14,3 +14,4 @@ __pycache__/
 # Миграции (опционально — оставляем, если работаешь в одиночку)
 # migrations/versions/*.py
 .env
+csrf_test.html
