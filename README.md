@@ -25,25 +25,24 @@
 1. Клонировать репозиторий:
 git clone https://github.com/asaass7/taskflow.git
 
-text
+
 2. Создать виртуальное окружение:
 python3 -m venv venv
 source venv/bin/activate
 
-text
+
 3. Установить зависимости:
 pip install -r requirements.txt
 
-text
+
 4. Скопировать `.env.example` в `.env` и заполнить своими значениями.
 5. Применить миграции:
 flask db upgrade
 
-text
+
 6. Запустить:
 python app.py
 
-text
 
 ## Автор
 
